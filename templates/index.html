@@ -1,0 +1,56 @@
+{% load static %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>View List</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <!-- top -->
+            <form action="{% url 'index' %}" method="POST">
+                 {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1>View Grocery List</h1>
+                </div>
+                
+                <div class="col-lg-6 float-right">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Date Filtering-->
+                            <input type="date" name="date" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="submit" class="btn btn-danger" value="filter">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+            <!-- // top -->
+            <!-- Grocery Cards -->
+            
+            <div class="row mt-4">
+                {% for product in grocery %}
+                <!--- -->
+                <!-- Loop This -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">{{product.product_name}}</h5>
+                          <h6 class="card-subtitle mb-2 text-muted">{{product.product_quantity}} Pcs.</h6>
+                          <p {% if product.product_flag == "Not Available" %} class= "text-danger" {% elif product.product_flag == "Pending" %}
+                          class="text-info" {% else %}class="text-success" {% endif %}>{{product.product_flag}}</p>
+                        </div>
+                      </div>
+                </div>
+                {% endfor %}
+                <!-- // Loop -->
+                
+
+            </div>
+        </div>
+    </body>
+</html>
