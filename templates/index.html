@@ -7,42 +7,33 @@
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
     </head>
     <body>
+        <div class="col-md-12 text-center">
+            <a href="{% url 'logout' %}" class="btn btn-danger btn-lg float-right" role="button" >LogOut</a>
+        </div>
         <div class="container mt-5">
-            <!-- top -->
-            <form action="{% url 'index' %}" method="POST">
-                 {% csrf_token %}
-            <div class="row">
-                <div class="col-lg-6">
-                    <h1>View Grocery List</h1>
-                </div>
-                
-                <div class="col-lg-6 float-right">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <!-- Date Filtering-->
-                            <input type="date" name="date" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <input type="submit" class="btn btn-danger" value="filter">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-            <!-- // top -->
             <!-- Grocery Cards -->
+            
+            <div class="col-md-12 text-center">
+                <a href="{% url 'add' %}" class="btn btn-primary btn-lg" role="button" >Add New Product</a>
+            </div>
             
             <div class="row mt-4">
                 {% for product in grocery %}
                 <!--- -->
                 <!-- Loop This -->
                 <div class="col-lg-4">
-                    <div class="card">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{product.product_image.url}}" alt="Card image cap">
                         <div class="card-body">
+                            <a class="card-block stretched-link text-decoration-none" href="{% url 'detail' product.id %}">
                           <h5 class="card-title">{{product.product_name}}</h5>
-                          <h6 class="card-subtitle mb-2 text-muted">{{product.product_quantity}} Pcs.</h6>
-                          <p {% if product.product_flag == "Not Available" %} class= "text-danger" {% elif product.product_flag == "Pending" %}
-                          class="text-info" {% else %}class="text-success" {% endif %}>{{product.product_flag}}</p>
+                          <h6 class="card-subtitle mb-2 text-muted"> Price : ₹ {{product.product_price}} </h6>
+                          <h6 class="card-subtitle mb-2 text-muted"> Color :  {{product.product_color}} </h6>
+                                <h6 class="card-subtitle mb-2 text-muted"> Stock :  {{product.product_stock_status}} </h6>
+                        </a>
+                        {% if product.user == request.user %}
+                        <a href="#" class="btn btn-primary">Edit Product</a>
+                        {% endif %}
                         </div>
                       </div>
                 </div>

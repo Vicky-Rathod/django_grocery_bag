@@ -1,0 +1,40 @@
+{% load static %}
+{% load widget_tweaks %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Update List</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1>Product Detail</h1>
+            <img src="{{obj.product_image.url}}" class="img-thumbnail mx-auto d-block" alt="...">
+            <form >
+                <div class="form-group">
+                    <label>Product name</label>
+                    {{form.product_name | attr:"class:form-control" | attr:"readonly" }}
+                </div>
+                <div class="form-group">
+                    <label>Product Price</label>
+                    {{form.product_price | attr:"class:form-control" | attr:"readonly" }}
+                   </div>
+                   <div class="form-group">
+                    <label>Product Color</label>
+            
+                    {{form.product_color | attr:"class:form-control" | attr:"disabled:true"  }}
+                </div>
+                <div class="form-group">
+                    <label>Product Category</label>
+            
+                    {{form.product_category | attr:"class:form-control" | attr:"disabled:true"  }}
+                </div>
+                <div class="form-group">
+                    <label>Product Stock</label>
+                    {{form.product_stock_status | attr:"class:form-control" | attr:"disabled:true" }}
+                </div>
+            </form>
+        </div>
+    </body> 
+</html>
