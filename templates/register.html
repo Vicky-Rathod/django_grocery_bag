@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <form name="loginform" action="{% url 'custom_auth:login' %}" method="post"   onsubmit = "return(validate());" data-parsley-validate>
+                    <form name="loginform" action="{% url 'custom_auth:register' %}" method="post"   onsubmit = "return(validate());" data-parsley-validate>
                         {% csrf_token %}
                     <div class="card2 card border-0 px-4 py-5">
 
