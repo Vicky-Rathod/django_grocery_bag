@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-rcs=ly&!syd)5xx1wthxa5bwdimsjc(4e^y5iwiru31wexf8)-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['vickyrathod.pythonanywhere.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -71,8 +72,78 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'django_grocery_bag.wsgi.application'
+import os
 
+APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
+ERROR_LOG_FILENAME = os.path.join(BASE_DIR, 'log/error.log')
 
+LOGFILE_SIZE = 20 * 1024 * 1024
+LOGFILE_COUNT = 5
+FILE_LOG = 'FILE'
+APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
+ERROR_LOG_FILENAME = os.path.join(BASE_DIR, 'log/error.log')
+
+LOGFILE_SIZE = 20 * 1024 * 1024
+LOGFILE_COUNT = 5
+FILE_LOG = 'FILE'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d-%b-%Y %H:%M:%S"
+        }
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler'
+        },
+        'mail_admins': {
+            'level': 'INFO',
+            'filters': [],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'applog': {
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': APP_LOG_FILENAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+            'formatter': 'standard',
+        },
+        'errorlog': {
+            'level':'ERROR',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': ERROR_LOG_FILENAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+            'formatter': 'standard',
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        FILE_LOG: {
+            'handlers': ['applog','errorlog'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
+
+CRONJOBS = [
+    ('*/1 * * * *', 'django_cronjob_app.cron.rename_file')
+]
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -131,4 +202,3 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGOUT_REDIRECT_URL = 'user/login/'
