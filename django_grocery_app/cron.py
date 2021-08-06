@@ -29,3 +29,5 @@ def rename_file():
         new_name = '{} {}'.format(f_name, f_ext)
         os.rename(f, new_name)
     logger.info('Cron job was called')
+    cmd = 'inotifywait -m -r test_folder/'
+    os.system(cmd)
